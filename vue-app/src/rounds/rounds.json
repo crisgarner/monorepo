@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "network": "arbitrum-goerli",
+    "address": "0x40e78417fE4159C7a8eCAe9c82439dc4A875c044",
+    "startTime": 1689721842,
+    "isFinalized": true
+  }
+]
