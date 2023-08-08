@@ -4,5 +4,11 @@
     "address": "0x40e78417fE4159C7a8eCAe9c82439dc4A875c044",
     "startTime": 1689721842,
     "isFinalized": true
+  },
+  {
+    "network": "arbitrum",
+    "address": "0xEE7d54c21E67bE014AfB27063918683d321Eb7b3",
+    "startTime": 1689889191,
+    "isFinalized": true
   }
 ]
