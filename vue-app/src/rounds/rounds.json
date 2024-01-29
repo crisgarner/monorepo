@@ -10,5 +10,11 @@
     "address": "0xEE7d54c21E67bE014AfB27063918683d321Eb7b3",
     "startTime": 1689889191,
     "isFinalized": true
+  },
+  {
+    "network": "arbitrum",
+    "address": "0x5EFeF92d101EC108d918Cbb054714c1cFBa55036",
+    "startTime": 1702422545,
+    "isFinalized": true
   }
 ]
