@@ -15,7 +15,7 @@
       <div class="empty-cart">
         <div class="moon-emoji">🌚</div>
         <h3>{{ $t('cart.sign_the_message_to_see_your_cart') }}</h3>
-        <button @click="promptSignagure" class="btn-action">{{ $t('cart.sign') }}</button>
+        <button @click="promptSignature" class="btn-action">{{ $t('cart.sign') }}</button>
       </div>
     </div>
     <div v-else class="cart-container">
@@ -164,8 +164,11 @@
             })
           }}
         </div>
-        <div class="p1" v-if="isBrightIdRequired">
-          <links to="/verify" class="btn-primary">{{ $t('cart.link3') }} </links>
+        <div class="p1" v-if="isRegistrationRequired">
+          <links to="/verify" class="btn-primary">
+            <span v-if="isBrightIdRequired">{{ $t('cart.link3') }}</span>
+            <span v-else>{{ $t('cart.linkRegister') }}</span>
+          </links>
         </div>
         <button
           v-if="!isCartEmpty"
@@ -235,7 +238,7 @@ import CartItems from '@/components/CartItems.vue'
 import Links from '@/components/Links.vue'
 import TimeLeft from '@/components/TimeLeft.vue'
 import { MAX_CONTRIBUTION_AMOUNT, MAX_CART_SIZE, type CartItem, isContributionAmountValid } from '@/api/contributions'
-import { userRegistryType, UserRegistryType, operator } from '@/api/core'
+import { userRegistryType, UserRegistryType, operator, isBrightIdRequired } from '@/api/core'
 import { RoundStatus } from '@/api/round'
 import { formatAmount as _formatAmount } from '@/utils/amounts'
 import FundsNeededWarning from '@/components/FundsNeededWarning.vue'
@@ -309,7 +312,7 @@ function removeAll(): void {
 
 onMounted(() => {
   if (currentUser.value && !currentUser.value.encryptionKey) {
-    promptSignagure()
+    promptSignature()
   }
 })
 
@@ -320,7 +323,7 @@ function promptConnection(): void {
       onClose() {
         close().then(() => {
           if (currentUser.value?.walletAddress) {
-            promptSignagure()
+            promptSignature()
           }
         })
       },
@@ -329,7 +332,7 @@ function promptConnection(): void {
   open()
 }
 
-function promptSignagure(): void {
+function promptSignature(): void {
   const { open, close } = useModal({
     component: SignatureModal,
     attrs: {
@@ -475,11 +478,19 @@ const isBrightIdRequired = computed(
   () => userRegistryType === UserRegistryType.BRIGHT_ID && !currentUser.value?.isRegistered,
 )
 
+const isRegistrationRequired = computed(
+  () => userRegistryType !== UserRegistryType.SIMPLE && !currentUser.value?.isRegistered,
+)
+
 const errorMessage = computed<string | null>(() => {
   if (isMessageLimitReached.value) return t('dynamic.cart.error.reached_contribution_limit')
   if (!currentUser.value) return t('dynamic.cart.error.connect_wallet')
   if (isBrightIdRequired.value) return t('dynamic.cart.error.need_to_setup_brightid')
-  if (!currentUser.value.isRegistered) return t('dynamic.cart.error.user_not_registered', { operator })
+  if (!currentUser.value.isRegistered) {
+    return userRegistryType === UserRegistryType.SIMPLE
+      ? t('dynamic.cart.error.user_not_registered', { operator })
+      : t('dynamic.cart.error.need_to_register')
+  }
   if (!isFormValid()) return t('dynamic.cart.error.invalid_contribution_amount')
   if (cart.value.length > MAX_CART_SIZE)
     return t('dynamic.cart.error.exceeded_max_cart_size', {
