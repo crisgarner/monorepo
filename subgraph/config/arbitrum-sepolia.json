@@ -1,0 +1,6 @@
+{
+  "network": "arbitrum-sepolia",
+  "address": "0x383aE5bb4387e9715323180Db14e2C483fc11787",
+  "factoryStartBlock": 14076680,
+  "recipientRegistryStartBlock": 14076680
+}

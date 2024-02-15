@@ -54,9 +54,10 @@ const config: HardhatUserConfig = {
       timeout: 60000,
       accounts,
     },
-    'arbitrum-goerli': {
+    'arbitrum-sepolia': {
       url:
-        process.env.JSONRPC_HTTP_URL || 'https://goerli-rollup.arbitrum.io/rpc',
+        process.env.JSONRPC_HTTP_URL ||
+        'https://sepolia-rollup.arbitrum.io/rpc	',
       accounts,
     },
     rinkarby: {
@@ -70,6 +71,16 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY || 'YOUR_ETHERSCAN_API_KEY',
+    customChains: [
+      {
+        network: 'arbitrum-sepolia',
+        chainId: 421614,
+        urls: {
+          apiURL: 'https://api-sepolia.arbiscan.io/api',
+          browserURL: 'https://sepolia.arbiscan.io',
+        },
+      },
+    ],
   },
   paths: {
     artifacts: 'build/contracts',
