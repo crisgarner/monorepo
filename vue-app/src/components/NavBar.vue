@@ -5,6 +5,9 @@
     </links>
     <div class="btn-row">
       <div>
+        <img class="navbar-btn" :src="zupass" @click="zupassPopup()" />
+      </div>
+      <div>
         <img class="navbar-btn" :src="sunImageUrl" @click="toggleTheme()" />
       </div>
       <div v-click-outside="closeHelpDropdown" class="help-dropdown">
@@ -95,6 +98,15 @@ import { storeToRefs } from 'pinia'
 import { languages, isLocaleSupported } from '@/plugins/i18n'
 import { useI18n } from 'vue-i18n'
 import { getAssetsUrl } from '@/utils/url'
+//Zupass
+import { EdDSATicketPCDPackage } from '@pcd/eddsa-ticket-pcd'
+import { ArgumentTypeName } from '@pcd/pcd-types'
+import { SemaphoreIdentityPCDPackage } from '@pcd/semaphore-identity-pcd'
+// import {
+//   EdDSATicketFieldsToReveal,
+//   ZKEdDSAEventTicketPCDArgs,
+//   ZKEdDSAEventTicketPCDPackage,
+// } from '@pcd/zk-eddsa-event-ticket-pcd'
 
 const { locale } = useI18n()
 
@@ -112,6 +124,7 @@ const themeIcon = computed<string>(() => {
   return appStore.theme === ThemeMode.LIGHT ? 'half-moon.svg' : 'sun.svg'
 })
 const sunImageUrl = computed(() => getAssetsUrl(themeIcon.value))
+const zupass = computed(() => getAssetsUrl('verified.svg'))
 const themeKey = computed<string>(() => 'theme')
 const languageKey = 'language'
 
@@ -143,6 +156,10 @@ function toggleHelpDropdown(): void {
 function toggleTheme(): void {
   appStore.toggleTheme()
   lsSet(themeKey.value, appStore.theme)
+}
+
+function zupassPopup(): void {
+  console.log('zupass')
 }
 </script>
 
